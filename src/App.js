@@ -95,9 +95,9 @@ class App extends Component {
       .catch((error) => console.log("error", error));
   };
 
-  onRouteChange =()=>{
-    this.setState({route:'home'});
-  }
+  onRouteChange = (route) => {
+    this.setState({ route: route });
+  };
 
   render() {
     return (
@@ -109,9 +109,9 @@ class App extends Component {
           type="cobweb"
           bg={true}
         />
-        <Navigation />
+        <Navigation onRouteChange={this.onRouteChange} />
         {this.state.route === "signin" ? (
-          <Signin onRouteChange={this.onRouteChange}/>
+          <Signin onRouteChange={this.onRouteChange} />
         ) : (
           <div>
             <Logo />
