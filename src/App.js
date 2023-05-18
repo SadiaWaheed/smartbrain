@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ParticlesBg from "particles-bg";
+import FaceRecognition from './components/FaceRecognition/FaceRecognition'; 
 import Navigation from "./components/Navigation/Navigation";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Logo from "./components/Logo/Logo";
@@ -12,7 +13,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
   // Specify the correct user_id/app_id pairings
   // Since you're making inferences outside your app's scope
   const USER_ID = "txg0oa4xu0zl";
-  const APP_ID = "smart-brain";
+  const APP_ID = "my-first-application";
   // Change these to whatever model and image URL you want to use
   //const MODEL_ID = "face-detection";
   const IMAGE_URL = imageUrl;
@@ -50,31 +51,36 @@ class App extends Component {
     super();
     this.state = {
       input: "",
+      imageUrl:""
     };
   }
 
   onInputChange = (event) => {
-    console.log(event);
+    this.setState({ input: event.target.value});
   };
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
 
     fetch(
-      "https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs",
+      "https://api.clarifai.com/v2/models/face-detection/outputs",
       returnClarifaiRequestOptions(this.state.input)
     )
       .then((response) => response.json())
       .then((response) => {
-        console.log("hi", response);
         if (response) {
-          fetch("http://localhost:3000/image", {
+        console.log("hi", response.outputs[0].data.regions[0].region_info);
+         /*  fetch("http://localhost:3000/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              ID: this.state.user.id,
+              id: this.state.user.id,
             }),
-          });
+          })
+          .then(response => response.json())
+          .then(count => {
+            this.setState(Object.assign(this.state.user, {entries:count}))
+          }) */
         }
       })
       .catch((error) => console.log("error", error));
@@ -97,7 +103,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        {/* <FaceRecognition /> */}
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
