@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation/Navigation";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Logo from "./components/Logo/Logo";
 import Rank from "./components/Rank/Rank";
+import Signin from "./components/Signin/Signin";
 import "./App.css";
 
 const returnClarifaiRequestOptions = (imageUrl) => {
@@ -14,8 +15,6 @@ const returnClarifaiRequestOptions = (imageUrl) => {
   // Since you're making inferences outside your app's scope
   const USER_ID = "txg0oa4xu0zl";
   const APP_ID = "my-first-application";
-  // Change these to whatever model and image URL you want to use
-  //const MODEL_ID = "face-detection";
   const IMAGE_URL = imageUrl;
 
   const raw = JSON.stringify({
@@ -104,6 +103,7 @@ displayFaceBox = (box) => {
           type="cobweb"
           bg={true}
         />
+        <Signin />
         <Navigation />
         <Logo />s
         <Rank />
