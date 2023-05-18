@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ParticlesBg from "particles-bg";
-import FaceRecognition from './components/FaceRecognition/FaceRecognition'; 
+import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Navigation from "./components/Navigation/Navigation";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Logo from "./components/Logo/Logo";
@@ -50,34 +50,35 @@ class App extends Component {
     super();
     this.state = {
       input: "",
-      imageUrl:"",
-      box:{}
+      imageUrl: "",
+      box: {},
+      route: "signin",
     };
   }
 
-caluculateFaceLocation = (data) =>{
-  const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-  const image = document.getElementById('inputimage');
-  const width = Number(image.width);
-  const height = Number(image.height);
-  console.log(width, height)
-  console.log(clarifaiFace)
-  return{
-    leftCol : clarifaiFace.left_col * width,
-    topRow : clarifaiFace.top_row * height,
-    rightCol : width -(clarifaiFace.right_col * width),
-    bottomRow : height - (clarifaiFace.bottom_row * height)
-    
-  }
-}
+  caluculateFaceLocation = (data) => {
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById("inputimage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+    console.log(width, height);
+    console.log(clarifaiFace);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - clarifaiFace.right_col * width,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+    };
+  };
 
-displayFaceBox = (box) => {
-  console.log(box)
-  this.setState({box:box});
-}
+  displayFaceBox = (box) => {
+    console.log(box);
+    this.setState({ box: box });
+  };
 
   onInputChange = (event) => {
-    this.setState({ input: event.target.value});
+    this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = () => {
@@ -88,10 +89,15 @@ displayFaceBox = (box) => {
       returnClarifaiRequestOptions(this.state.input)
     )
       .then((response) => response.json())
-      .then((response) => this.displayFaceBox(this.caluculateFaceLocation(response))
+      .then((response) =>
+        this.displayFaceBox(this.caluculateFaceLocation(response))
       )
       .catch((error) => console.log("error", error));
   };
+
+  onRouteChange =()=>{
+    this.setState({route:'home'});
+  }
 
   render() {
     return (
@@ -103,15 +109,23 @@ displayFaceBox = (box) => {
           type="cobweb"
           bg={true}
         />
-        <Signin />
         <Navigation />
-        <Logo />s
-        <Rank />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onButtonSubmit={this.onButtonSubmit}
-        />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+        {this.state.route === "signin" ? (
+          <Signin onRouteChange={this.onRouteChange}/>
+        ) : (
+          <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onButtonSubmit={this.onButtonSubmit}
+            />
+            <FaceRecognition
+              box={this.state.box}
+              imageUrl={this.state.imageUrl}
+            />
+          </div>
+        )}
       </div>
     );
   }
