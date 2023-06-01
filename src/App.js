@@ -55,8 +55,27 @@ class App extends Component {
       box: {},
       route: "signin",
       isSignedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        entries: 0,
+        joined: "",
+      },
     };
   }
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined,
+      },
+    });
+  };
 
   caluculateFaceLocation = (data) => {
     const clarifaiFace =
@@ -97,12 +116,12 @@ class App extends Component {
   onRouteChange = (route) => {
     if (route === "signout") this.setState({ isSignedIn: false });
     else if (route === "home") this.setState({ isSignedIn: true });
-    
+
     this.setState({ route: route });
   };
 
   render() {
-    const {isSignedIn, imageUrl, box, route} = this.state;
+    const { isSignedIn, imageUrl, box, route } = this.state;
     return (
       <div className="App">
         <ParticlesBg
@@ -124,15 +143,12 @@ class App extends Component {
               onInputChange={this.onInputChange}
               onButtonSubmit={this.onButtonSubmit}
             />
-            <FaceRecognition
-              box={box}
-              imageUrl={imageUrl}
-            />
+            <FaceRecognition box={box} imageUrl={imageUrl} />
           </div>
         ) : route === "signin" ? (
           <Signin onRouteChange={this.onRouteChange} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )}
       </div>
     );
