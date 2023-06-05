@@ -46,11 +46,8 @@ const returnClarifaiRequestOptions = (imageUrl) => {
   return requestOptions;
 };
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      input: "",
+const initialState = {
+  input: "",
       imageUrl: "",
       box: {},
       route: "signin",
@@ -60,9 +57,14 @@ class App extends Component {
         name: "",
         email: "",
         entries: 0,
-        joined: "",
-      },
-    };
+        joined: ""
+      }
+};
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -118,9 +120,9 @@ class App extends Component {
           })
             .then((response) => response.json())
             .then((count) => {
-              console.log(count);
               this.setState(Object.assign(this.state.user, { entries: count }));
-            });
+            })
+            .catch(console.log);
         }
         this.displayFaceBox(this.caluculateFaceLocation(response));
       })
@@ -128,7 +130,7 @@ class App extends Component {
   };
 
   onRouteChange = (route) => {
-    if (route === "signout") this.setState({ isSignedIn: false });
+    if (route === "signout") this.setState({ initialState });
     else if (route === "home") this.setState({ isSignedIn: true });
 
     this.setState({ route: route });
