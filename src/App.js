@@ -48,17 +48,17 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 
 const initialState = {
   input: "",
-      imageUrl: "",
-      box: {},
-      route: "signin",
-      isSignedIn: false,
-      user: {
-        id: "",
-        name: "",
-        email: "",
-        entries: 0,
-        joined: ""
-      }
+  imageUrl: "",
+  box: {},
+  route: "signin",
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: ""
+  }
 };
 
 class App extends Component {
@@ -130,7 +130,7 @@ class App extends Component {
   };
 
   onRouteChange = (route) => {
-    if (route === "signout") this.setState({ initialState });
+    if (route === "signout") this.setState({initialState});
     else if (route === "home") this.setState({ isSignedIn: true });
 
     this.setState({ route: route });
