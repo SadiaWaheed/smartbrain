@@ -77,6 +77,7 @@ class App extends Component {
       .then((response) => response.json())
       .then((response) => {
         if (response) {
+          console.log(response);
           fetch("https://samrt-brain-api.onrender.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
@@ -96,7 +97,7 @@ class App extends Component {
   };
 
   onRouteChange = (route) => {
-    if (route === "signout") this.setState({ initialState });
+    if (route === "signout") this.setState(initialState);
     else if (route === "home") this.setState({ isSignedIn: true });
 
     this.setState({ route: route });
